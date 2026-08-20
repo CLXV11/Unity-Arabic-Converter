@@ -1,0 +1,65 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Create package
+        run: npm init -y
+
+      - name: Install Capacitor
+        run: |
+          npm install @capacitor/core @capacitor/cli
+          npm install @capacitor/android
+
+      - name: Prepare web files
+        run: |
+          mkdir -p www
+          cp index.html www/
+          cp style.css www/
+          find . -maxdepth 1 -type f -name "*.js" -exec cp {} www/ \;
+          if [ -d "assets" ]; then cp -r assets www/; fi
+          if [ -d "images" ]; then cp -r images www/; fi
+          if [ -d "fonts" ]; then cp -r fonts www/; fi
+
+      - name: Create Capacitor config
+        run: |
+          cat > capacitor.config.json <<'EOF'
+          {
+            "appId": "com.unityarabic.converter",
+            "appName": "Unity Arabic Converter",
+            "webDir": "www",
+            "bundledWebRuntime": false
+          }
+          EOF
+
+      - name: Add Android
+        run: npx cap add android
+
+      - name: Copy web files
+        run: npx cap copy android
+
+      - name: Build APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unity-Arabic-Converter-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
