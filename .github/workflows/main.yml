@@ -38,10 +38,20 @@ jobs:
           mkdir -p www
           cp index.html www/
           cp style.css www/
+
           find . -maxdepth 1 -type f -name "*.js" -exec cp {} www/ \;
-          if [ -d "assets" ]; then cp -r assets www/; fi
-          if [ -d "images" ]; then cp -r images www/; fi
-          if [ -d "fonts" ]; then cp -r fonts www/; fi
+
+          if [ -d "assets" ]; then
+            cp -r assets www/
+          fi
+
+          if [ -d "images" ]; then
+            cp -r images www/
+          fi
+
+          if [ -d "fonts" ]; then
+            cp -r fonts www/
+          fi
 
       - name: Create Capacitor config
         run: |
@@ -57,6 +67,16 @@ jobs:
       - name: Add Android
         run: npx cap add android
 
+      - name: Fix Kotlin duplicate classes
+        run: |
+          cat >> android/app/build.gradle <<'EOF'
+
+          configurations.configureEach {
+              exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7"
+              exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk8"
+          }
+          EOF
+
       - name: Copy web files
         run: npx cap copy android
 
@@ -64,8 +84,13 @@ jobs:
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon
 
+      - name: Rename APK
+        run: |
+          mv android/app/build/outputs/apk/debug/app-debug.apk \
+             android/app/build/outputs/apk/debug/Unity-Arabic-Converter.apk
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Unity-Arabic-Converter-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: android/app/build/outputs/apk/debug/Unity-Arabic-Converter.apk
