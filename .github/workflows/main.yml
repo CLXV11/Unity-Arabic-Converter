@@ -36,6 +36,7 @@ jobs:
       - name: Prepare web files
         run: |
           mkdir -p www
+
           cp index.html www/
           cp style.css www/
 
@@ -66,6 +67,32 @@ jobs:
 
       - name: Add Android
         run: npx cap add android
+
+      - name: Add app icon
+        run: |
+          mkdir -p android/app/src/main/res/drawable
+          cp icon.png android/app/src/main/res/drawable/app_icon.png
+
+      - name: Set Android app icon
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          manifest = Path("android/app/src/main/AndroidManifest.xml")
+          text = manifest.read_text()
+
+          text = text.replace(
+              'android:icon="@mipmap/ic_launcher"',
+              'android:icon="@drawable/app_icon"'
+          )
+
+          text = text.replace(
+              'android:roundIcon="@mipmap/ic_launcher_round"',
+              'android:roundIcon="@drawable/app_icon"'
+          )
+
+          manifest.write_text(text)
+          PY
 
       - name: Fix Kotlin duplicate classes
         run: |
