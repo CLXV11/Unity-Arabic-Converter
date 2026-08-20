@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="Unity Arabic Text Converter Pro - أداة احترافية لتحويل النصوص العربية لألعاب Unity">
+    <title>Unity Arabic Text Converter Pro</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ع</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <h1 class="app-title">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span>Unity Arabic Converter Pro</span>
+            </h1>
+            <button id="themeToggle" class="icon-btn" aria-label="تبديل المظهر">
+                <svg class="theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                </svg>
+                <svg class="theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <button id="langAr" class="lang-btn active">العربية</button>
+            <button id="langEn" class="lang-btn">English</button>
+        </div>
+
+        <!-- Main Converter Section -->
+        <section class="card converter-section">
+            <div class="section-header">
+                <h2 id="mainTitle">محول النصوص</h2>
+                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M4 7h16M4 12h16M4 17h10"/>
+                </svg>
+            </div>
+            
+            <!-- Input Area -->
+            <div class="input-group">
+                <label id="inputLabel" for="inputText">النص الأصلي</label>
+                <textarea id="inputText" class="text-input" rows="4" placeholder="اكتب النص العربي هنا..."></textarea>
+                <div class="input-actions">
+                    <button id="clearBtn" class="btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                        <span>مسح</span>
+                    </button>
+                    <button id="pasteBtn" class="btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/>
+                            <rect x="8" y="2" width="8" height="4" rx="1"/>
+                        </svg>
+                        <span>لصق</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Selector -->
+            <div class="profile-selector">
+                <label id="profileLabel" for="profileSelect">ملف التحويل</label>
+                <select id="profileSelect" class="profile-select">
+                    <!-- Profiles will be loaded dynamically -->
+                </select>
+            </div>
+
+            <!-- Convert Button -->
+            <button id="convertBtn" class="btn-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M17 1l4 4-4 4"/>
+                    <path d="M3 11V9a4 4 0 014-4h14"/>
+                    <path d="M7 23l-4-4 4-4"/>
+                    <path d="M21 13v2a4 4 0 01-4 4H3"/>
+                </svg>
+                <span>تحويل</span>
+            </button>
+
+            <!-- Output Area -->
+            <div class="output-section">
+                <div class="output-header">
+                    <label id="outputLabel">النتيجة</label>
+                    <button id="copyBtn" class="btn-copy">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        <span>نسخ</span>
+                    </button>
+                </div>
+                <textarea id="outputText" class="text-output" rows="4" readonly></textarea>
+            </div>
+
+            <!-- Analysis Display -->
+            <div id="analysisDisplay" class="analysis-display"></div>
+        </section>
+
+        <!-- Advanced Tools -->
+        <section class="card tools-section">
+            <div class="section-header">
+                <h2 id="toolsTitle">أدوات متقدمة</h2>
+                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+                </svg>
+            </div>
+            
+            <div class="tools-grid">
+                <button id="charInspectorBtn" class="tool-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+                    </svg>
+                    <span>فحص الأحرف</span>
+                </button>
+                
+                <button id="unicodeInspectorBtn" class="tool-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+                    </svg>
+                    <span>مفتش Unicode</span>
+                </button>
+                
+                <button id="gameAnalyzerBtn" class="tool-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <span>محلل النصوص</span>
+                </button>
+                
+                <button id="batchConverterBtn" class="tool-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+                    </svg>
+                    <span>تحويل دفعة</span>
+                </button>
+                
+                <button id="fileConverterBtn" class="tool-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/>
+                        <path d="M13 2v7h7"/>
+                    </svg>
+                    <span>محول الملفات</span>
+                </button>
+                
+                <button id="customProfilesBtn" class="tool-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/>
+                        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                    </svg>
+                    <span>الملفات المخصصة</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section class="card settings-section">
+            <div class="section-header">
+                <h2 id="settingsTitle">الإعدادات</h2>
+                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                </svg>
+            </div>
+            
+            <div class="settings-options">
+                <label class="setting-item">
+                    <span>التحويل التلقائي</span>
+                    <input type="checkbox" id="autoConvert" class="toggle">
+                </label>
+                
+                <label class="setting-item">
+                    <span>عرض Unicode</span>
+                    <input type="checkbox" id="showUnicode" class="toggle" checked>
+                </label>
+                
+                <label class="setting-item">
+                    <span>التشخيص</span>
+                    <input type="checkbox" id="showDiagnostics" class="toggle" checked>
+                </label>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Dialog -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+                <button id="modalClose" class="icon-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="modalBody" class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
