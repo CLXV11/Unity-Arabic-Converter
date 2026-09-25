@@ -27,7 +27,7 @@ yarn install
 pnpm install
 ```
 
-## Usage
+## Usageggg
 
 Open `index.html` in your browser to use the web interface, or integrate the JavaScript modules into your project.
 
